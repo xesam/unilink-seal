@@ -1,0 +1,8 @@
+packages:
+  - 'packages/linkseal'
+  - 'packages/linkseal-signer'
+  - 'packages/linkseal-resolver'
+allowBuilds:
+  esbuild: true
+onlyBuiltDependencies:
+  - esbuild

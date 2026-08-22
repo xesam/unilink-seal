@@ -1,0 +1,12 @@
+{
+  "name": "linkseal-js-workspace",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --filter linkseal build && pnpm --filter linkseal-signer build && pnpm --filter linkseal-resolver build"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}
