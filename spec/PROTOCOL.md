@@ -112,6 +112,7 @@ v1 版本明确**不包含**：
 
 - `context`（模板变量到解析方变量的映射表）——理由见 §八
 - `target`、WebView/浏览器/deeplink/native route 执行策略、跳转确认弹框、客户端导航执行器
+- `iat` / `nbf` / nonce 一次性消费语义——`expiresAt` 只限制协议的有效期，不提供防重放：协议在过期前可被任意次消费。若需要一次性语义，由宿主在应用层实现。字段本身留待 v1.x 评估
 
 ---
 
@@ -201,7 +202,7 @@ https://example.com/users/{userId}?source=app{?token}
 
 ### 5.2 算法
 
-当前 v1 使用 **RSA-SHA256**。
+当前 v1 使用 **Ed25519**（RFC 8032）。Ed25519 签名为 64 字节、确定性（同一私钥 + payload 在任意合规实现上产出字节级一致的签名），便于跨语言钉死。
 
 签名前需对 payload 进行**规范化（canonicalization）**——将 payload 序列化为稳定的字节串。规范化必须**递归覆盖所有层级**，包括 `policy` 及其 `defaults` 的全部内容；任何未纳入规范化的字段都不受签名保护，可被篡改而不被发现。
 
@@ -215,11 +216,11 @@ https://example.com/users/{userId}?source=app{?token}
 {"policy":{"missing":"error"},"template":"https://api.example.com/users/{userId}?source=app{&token,locale}","version":"1.0"}
 ```
 
-签发方：`signature = RSA-SHA256.Sign(privateKey, canonicalPayload)`
+签发方：`signature = Ed25519.Sign(privateKey, canonicalPayload)`
 
-解析方：`RSA-SHA256.Verify(publicKey, payload, signature)`
+解析方：`Ed25519.Verify(publicKey, payload, signature)`
 
-后续版本可考虑迁移至 **Ed25519**（更快、更短签名、更易于解析方实现），届时通过 `version` 字段区分算法。
+密钥编码：两端均接受 **PKCS#8** 编码的 PEM——私钥头 `-----BEGIN PRIVATE KEY-----`、公钥头 `-----BEGIN PUBLIC KEY-----`（即 SPKI）。生成：`openssl genpkey -algorithm Ed25519 -out <key>.pem`。
 
 ### 5.3 密钥管理
 
@@ -295,15 +296,18 @@ LinkSeal 提供三项安全保证：
 
 Resolver 的信任校验由 `LinkSealCore` 内置，无需宿主另行实现：
 
-- **scheme 默认强制**：仅允许 `https`。可通过 `setAllowedSchemes` 扩展（如内网 `http`、deeplink 自定义 scheme），或传 `null` 关闭（仅测试用）。
-- **host 白名单 opt-in**：默认不校验 host；通过 `setAllowedHosts` 配置后才启用，按 hostname（不含端口）匹配。
+- **scheme 默认强制**：仅允许 `https`。可通过 `setAllowedSchemes` 扩展（如内网 `http`、deeplink 自定义 scheme）。关闭 scheme 校验的唯一方式是显式通配 `['*']`（JS）/ `List.of("*")`（Java）；**`null` 与空集合均抛配置错误**——空 scheme 白名单会使所有 URL 被拒，属于配置事故而非合法状态。
+- **host 白名单构造期强制**：host 是签名覆盖面的一部分，但签名只证明模板字节未篡改、不证明其 host 对本解析方可信，因此可信 host 边界必须在构造 `LinkSealCore` 时显式决定——未传 host 白名单则拒绝构造。传 `"*"`（JS）或 `List.of("*")`（Java）表示显式关闭 host 校验；`setAllowedHosts` **不接受 `null`**，运行期关闭同样只能走显式通配。匹配按 hostname（不含端口）。
+- **集合输入的三种语义**（两端一致，`null` 一律不是合法输入）：非空具体集合 = 白名单；含 `"*"` = 显式关闭校验；host 侧空集合 `[]` = 拒绝一切 host（fail-closed）。scheme 侧空集合是配置错误（见第一条）。
 - 校验在**展开后的 URL** 上执行，因此变量填入 host 位的情形也在覆盖范围内。
 
 宿主仍负责签名之外的跳转执行安全（WebView 权限、Cookie 策略、跳转确认等）。
 
 关于变量读取范围：解析方只为自己主动注册的占位符提供值，远程模板无法要求解析方暴露未实现的意图。读取边界由解析方注册了什么决定，不需要协议层的白名单字段。
 
-> **生产化提示**：v1 支持可选的 `expiresAt`（防重放）与 `kid`（密钥轮换），二者均参与签名覆盖面，篡改即验签失败。未携带 `expiresAt` 的协议签名长期有效，签发方应按风险决定是否设置过期。scheme/host 校验已由 SDK 默认/可选强制，无需宿主重复实现。
+> **生产化提示**：v1 支持可选的 `expiresAt`（限制协议有效期）与 `kid`（密钥轮换），二者均参与签名覆盖面，篡改即验签失败。`expiresAt` 不是防重放：协议在过期前可被任意次消费；未携带 `expiresAt` 的协议签名长期有效，签发方应按风险决定是否设置过期。scheme 默认强制、host 白名单构造期强制，均无需宿主重复实现。
+>
+> **错误类型化**：两端 SDK 以镜像的类型化错误暴露失败原因——JS 端 `LinkSealError` 及其子类 `VerificationError` / `ResolutionError` / `TrustError`（携带 `code` 字段），Java 端 `LinkSealException` 及其子类 `VerificationException` / `ResolutionException` / `TrustException`（携带 `code()` 方法）。code 清单两端一致：`INVALID_SIGNATURE` / `MALFORMED_EXPIRES_AT` / `PROTOCOL_EXPIRED` / `MISSING_VARIABLE` / `UNSUPPORTED_TEMPLATE` / `INVALID_TEMPLATE` / `UNTRUSTED_URL`。宿主应分支于 code 而非错误消息文本。
 
 ---
 

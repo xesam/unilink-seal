@@ -1,0 +1,49 @@
+{
+  "name": "unilink-seal",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "UniLink Seal JS shared types & RFC 8785 canonicalization — the trusted signed URL-template protocol.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "unilink-seal",
+    "url",
+    "template",
+    "signature",
+    "signed-url",
+    "rfc-6570",
+    "rfc-8785",
+    "trust",
+    "protocol"
+  ],
+  "license": "MIT",
+  "author": "xesam",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xesam/LinkSeal.git",
+    "directory": "javascript/packages/unilink-seal"
+  },
+  "homepage": "https://github.com/xesam/LinkSeal/tree/main/javascript/packages/unilink-seal",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "canonicalize": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "vitest": "^2.1.9"
+  }
+}

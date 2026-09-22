@@ -12,7 +12,7 @@ importers:
         specifier: ^5.3.0
         version: 5.9.3
 
-  packages/linkseal:
+  packages/unilink-seal:
     dependencies:
       canonicalize:
         specifier: ^3.0.0
@@ -25,27 +25,52 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9
 
-  packages/linkseal-resolver:
+  packages/unilink-seal-crypto-minimal:
     dependencies:
-      linkseal:
-        specifier: workspace:*
-        version: link:../linkseal
+      '@noble/ed25519':
+        specifier: ^3.2.0
+        version: 3.2.0
+      '@noble/hashes':
+        specifier: ^2.4.0
+        version: 2.4.0
     devDependencies:
-      linkseal-signer:
-        specifier: workspace:*
-        version: link:../linkseal-signer
       typescript:
         specifier: ^5.3.0
         version: 5.9.3
+      unilink-seal:
+        specifier: workspace:*
+        version: link:../unilink-seal
+      unilink-seal-resolver:
+        specifier: workspace:*
+        version: link:../unilink-seal-resolver
+      unilink-seal-signer:
+        specifier: workspace:*
+        version: link:../unilink-seal-signer
       vitest:
         specifier: ^2.1.9
         version: 2.1.9
 
-  packages/linkseal-signer:
+  packages/unilink-seal-resolver:
     dependencies:
-      linkseal:
+      unilink-seal:
         specifier: workspace:*
-        version: link:../linkseal
+        version: link:../unilink-seal
+    devDependencies:
+      typescript:
+        specifier: ^5.3.0
+        version: 5.9.3
+      unilink-seal-signer:
+        specifier: workspace:*
+        version: link:../unilink-seal-signer
+      vitest:
+        specifier: ^2.1.9
+        version: 2.1.9
+
+  packages/unilink-seal-signer:
+    dependencies:
+      unilink-seal:
+        specifier: workspace:*
+        version: link:../unilink-seal
     devDependencies:
       typescript:
         specifier: ^5.3.0
@@ -196,6 +221,13 @@ packages:
 
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
+
+  '@noble/ed25519@3.2.0':
+    resolution: {integrity: sha512-criDgRlnUA09hchYrTy/JUWPIEap5rZxQe6wDWzRx51oWWpDRcUpuNzlgPxDJaOK6AsW9c0wKcj3rKRv6t+bPQ==}
+
+  '@noble/hashes@2.4.0':
+    resolution: {integrity: sha512-X5XaVWZIBCT7HHZGm5I7ZQXDwLG+bGXuSrMQAW+7Zvl87h1kmc1ZB1VSRJcpUfoUrGQp4Fkoxm5kZ+Ms+aW+eA==}
+    engines: {node: '>= 20.19.0'}
 
   '@rollup/rollup-android-arm-eabi@4.60.4':
     resolution: {integrity: sha512-F5QXMSiFebS9hKZj02XhWLLnRpJ3B3AROP0tWbFBSj+6kCbg5m9j5JoHKd4mmSVy5mS/IMQloYgYxCuJC0fxEQ==}
@@ -628,6 +660,10 @@ snapshots:
     optional: true
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
+
+  '@noble/ed25519@3.2.0': {}
+
+  '@noble/hashes@2.4.0': {}
 
   '@rollup/rollup-android-arm-eabi@4.60.4':
     optional: true

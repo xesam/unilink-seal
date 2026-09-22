@@ -1,10 +1,10 @@
 {
-  "name": "linkseal-js-workspace",
+  "name": "unilink-seal-js-workspace",
   "version": "0.0.1",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "pnpm --filter linkseal build && pnpm --filter linkseal-signer build && pnpm --filter linkseal-resolver build"
+    "build": "pnpm --filter unilink-seal build && pnpm --filter unilink-seal-signer build && pnpm --filter unilink-seal-resolver build && pnpm --filter unilink-seal-crypto-minimal build"
   },
   "devDependencies": {
     "typescript": "^5.3.0"

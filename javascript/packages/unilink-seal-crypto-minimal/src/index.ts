@@ -1,0 +1,1 @@
+export { MinimalSignatureBackend } from './MinimalSignatureBackend';

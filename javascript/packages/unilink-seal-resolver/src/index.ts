@@ -1,0 +1,10 @@
+export { LinkSealCore } from './LinkSealCore.js';
+export type { LinkSealCoreOptions } from './LinkSealCore.js';
+export { LinkSealError, VerificationError, ResolutionError, TrustError } from './errors.js';
+export type { LinkSealErrorCode } from './errors.js';
+export type { SignatureBackend } from './SignatureBackend.js';
+export { WebCryptoSignatureBackend } from './WebCryptoSignatureBackend.js';
+export { VariableResolver } from './VariableResolver.js';
+export type { VariableProvider } from './VariableResolver.js';
+export { PolicyProcessor } from './PolicyProcessor.js';
+export { TemplateEngine } from './TemplateEngine.js';

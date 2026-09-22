@@ -1,7 +1,8 @@
 packages:
-  - 'packages/linkseal'
-  - 'packages/linkseal-signer'
-  - 'packages/linkseal-resolver'
+  - 'packages/unilink-seal'
+  - 'packages/unilink-seal-signer'
+  - 'packages/unilink-seal-resolver'
+  - 'packages/unilink-seal-crypto-minimal'
 allowBuilds:
   esbuild: true
 onlyBuiltDependencies:

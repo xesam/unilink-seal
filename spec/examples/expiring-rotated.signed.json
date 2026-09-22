@@ -1,5 +1,5 @@
 {
-  "publicKey": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1eQidq6J8RTOJI9WGiIy\nN9pcTEeinNie8AOYjCepGM7ADnonnISwE1M/M+LjtBzpQh1nnBq9zx1VhMAGhvZO\nnCbY50FjjYmY7aaRj8ueEn91heNPnZySrtnyHKCaIQB0zPGfP7B3rFnrn9FTjfBL\nMgWB1fWpWZa89EFyiYBMhi/jvxRl6I3Hp4D2Em3GykkspF3NHrc0Csazqs6Uo8iA\npdco6Vu5a2PRhkkqEaiyZjY1q24EWXl44ygpyB5OI7OquPSr9ewctd493dvO6rj5\nccfzOQ1Qk0NH5oe+uQYoe0p49B9lymSkfEcF7J/eS4FiD1z7aPKfZacDzQ9lH1j3\newIDAQAB\n-----END PUBLIC KEY-----\n",
+  "publicKey": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA5ej5JRGzS94uvAm7LRBLwPMBBxtT7JL4b+U6zAyuzUs=\n-----END PUBLIC KEY-----\n",
   "signedProtocol": {
     "payload": {
       "version": "1.0",
@@ -10,6 +10,6 @@
       "expiresAt": "2099-12-31T23:59:59Z",
       "kid": "test-key-1"
     },
-    "signature": "VMRA6bVzmCuRyFcJjNEFmtcI06DgrjkiPoZLpbP/TIxyBaON5QpbFYiIlITXJn3CiUxfbjUs7WeJ0pPgHkYgTrwxRZulcltZJAdUNycP8puekIqgvmV7o0N6yg489WwcUJsKZhvLQo3cyhsBvf7sbYk2QUefFQ9lfwXPKuKL0X/0pqNGfcKFQTYqh1gHNLM6zzaCkVLCfb1SdAwdNWtimzUN4Fvy6a+J591Mw+r3A8jkKRmZyK5lUlBG2JgpX9vVm7Y/wh5JgTDwidFWAxZss+Na8kDo9+4CVHj9rqSoC23PUAEegoMMfR3X4qNr6mivQhJZU7JT+XXCzsPguW5VKA=="
+    "signature": "5DVDCpn5At4kt/pEgVB5BOgOP3PBoF5WaxPKQ4aJsSSo9Fcr2PtBjxtqNsino+ZaPEMX7D5ihrF7uWGoxP7HAw=="
   }
 }

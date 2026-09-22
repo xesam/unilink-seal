@@ -5,12 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.github.xesam</groupId>
-  <artifactId>link-seal</artifactId>
+  <artifactId>unilink-seal</artifactId>
   <version>0.0.1</version>
   <packaging>jar</packaging>
 
-  <name>LinkSeal Java SDK</name>
-  <description>Java implementation of the LinkSeal signed URL template protocol.</description>
+  <name>UniLink Seal Java SDK</name>
+  <description>Java implementation of the UniLink Seal signed URL template protocol.</description>
 
   <properties>
     <maven.compiler.release>17</maven.compiler.release>
